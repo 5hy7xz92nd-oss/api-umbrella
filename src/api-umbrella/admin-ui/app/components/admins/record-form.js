@@ -27,7 +27,7 @@ export default class RecordForm extends Component.extend(Save) {
 
   @computed('currentAdmin.id', 'model.id')
   get isOwnProfile() {
-    return this.currentAdmin && this.model && this.currentAdmin.id === this.model.id;
+    return this.currentAdmin?.id && this.model?.id && this.currentAdmin.id === this.model.id;
   }
 
   get usernameLabel() {
