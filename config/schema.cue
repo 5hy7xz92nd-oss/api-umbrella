@@ -657,7 +657,7 @@ import "path"
     error_data: {
       common: {
         signup_url: "{{base_url}}"
-        contact_url: "{{base_url}}/contact/"
+        contact_url: "{{base_url}}"
       }
       not_found: {
         status_code: 404
@@ -677,27 +677,27 @@ import "path"
       api_key_disabled: {
         status_code: 403
         code: "API_KEY_DISABLED"
-        message: "The api_key supplied has been disabled. Contact us at {{contact_url}} for assistance"
+        message: "The api_key supplied has been disabled. Contact us for assistance: {{contact_url}}"
       }
       api_key_unverified: {
         status_code: 403
         code: "API_KEY_UNVERIFIED"
-        message: "The api_key supplied has not been verified yet. Please check your e-mail to verify the API key. Contact us at {{contact_url}} for assistance"
+        message: "The api_key supplied has not been verified yet. Please check your e-mail to verify the API key. Contact us for assistance {{contact_url}}"
       }
       api_key_unauthorized: {
         status_code: 403
         code: "API_KEY_UNAUTHORIZED"
-        message: "The api_key supplied is not authorized to access the given service. Contact us at {{contact_url}} for assistance"
+        message: "The api_key supplied is not authorized to access the given service. Contact us for assistance: {{contact_url}}"
       }
       over_rate_limit: {
         status_code: 429
         code: "OVER_RATE_LIMIT"
-        message: "You have exceeded your rate limit. Try again later or contact us at {{contact_url}} for assistance"
+        message: "You have exceeded your rate limit. Try again later or contact us for assistance: {{contact_url}}"
       }
       internal_server_error: {
         status_code: 500
         code: "INTERNAL_SERVER_ERROR"
-        message: "An unexpected error has occurred. Try again later or contact us at {{contact_url}} for assistance"
+        message: "An unexpected error has occurred. Try again later or contact us for assistance: {{contact_url}}"
       }
       https_required: {
         status_code: 400
@@ -707,7 +707,7 @@ import "path"
       scheduled_brownout: {
         status_code: 410
         code: "SCHEDULED_BROWNOUT"
-        message: "This API will be going away. Seek an alternative API. Contact us at {{contact_url}} for assistance."
+        message: "This API will be going away. Seek an alternative API. Contact us for assistance: {{contact_url}}"
       }
     }
   }
