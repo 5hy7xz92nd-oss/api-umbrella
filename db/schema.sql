@@ -1,6 +1,7 @@
 SET statement_timeout = 0;
 SET lock_timeout = 0;
 SET idle_in_transaction_session_timeout = 0;
+SET transaction_timeout = 0;
 SET client_encoding = 'UTF8';
 SET standard_conforming_strings = on;
 SELECT pg_catalog.set_config('search_path', '', false);
@@ -916,14 +917,14 @@ CREATE TABLE api_umbrella.api_backend_settings (
 --
 
 CREATE TABLE api_umbrella.api_backend_settings_required_roles (
-    api_backend_settings_id uuid NOT NULL,
+    api_backend_settings_id uuid CONSTRAINT api_backend_settings_required__api_backend_settings_id_not_null NOT NULL,
     api_role_id character varying(255) NOT NULL,
     created_at timestamp with time zone NOT NULL,
     created_by_id uuid NOT NULL,
-    created_by_username character varying(255) NOT NULL,
+    created_by_username character varying(255) CONSTRAINT api_backend_settings_required_role_created_by_username_not_null NOT NULL,
     updated_at timestamp with time zone NOT NULL,
     updated_by_id uuid NOT NULL,
-    updated_by_username character varying(255) NOT NULL
+    updated_by_username character varying(255) CONSTRAINT api_backend_settings_required_role_updated_by_username_not_null NOT NULL
 );
 
 

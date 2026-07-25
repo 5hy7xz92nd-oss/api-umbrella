@@ -30,7 +30,7 @@ services:
     environment:
       POSTGRES_PASSWORD: dev_password
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - postgres_data:/var/lib/postgresql
     ports:
       - "14011:5432"
   opensearch:
