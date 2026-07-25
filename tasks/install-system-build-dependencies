@@ -38,6 +38,8 @@ elif [[ "$ID_NORMALIZED" == "debian" ]]; then
   if [[ "$ID" == "debian" ]]; then
     # shellcheck disable=SC1091
     distro=$(. /etc/os-release && echo "$VERSION_CODENAME")
+    apt-get update
+    DEBIAN_FRONTEND=noninteractive apt-get -y --no-install-recommends install curl ca-certificates
     curl -fsSL -o /usr/share/keyrings/pgdg.asc https://www.postgresql.org/media/keys/ACCC4CF8.asc
     echo "deb [signed-by=/usr/share/keyrings/pgdg.asc] http://apt.postgresql.org/pub/repos/apt/ ${distro}-pgdg main" > /etc/apt/sources.list.d/pgdg.list
   fi
