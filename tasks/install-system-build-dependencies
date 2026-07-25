@@ -8,7 +8,9 @@ source ./tasks/helpers/detect_os_release.sh
 source "$SOURCE_DIR/build/package_dependencies.sh"
 
 install_dependencies=("${all_build_dependencies[@]}")
-if [ "${INSTALL_TEST_DEPENDENCIES:-}" == "true" ]; then
+if [ "${INSTALL_CORE_RUNTIME_DEPENDENCIES:-}" == "true" ]; then
+  install_dependencies=("${core_runtime_dependencies[@]}")
+elif [ "${INSTALL_TEST_DEPENDENCIES:-}" == "true" ]; then
   install_dependencies=("${all_dependencies[@]}")
 fi
 

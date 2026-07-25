@@ -170,12 +170,14 @@ FROM public.ecr.aws/docker/library/debian:bookworm AS runtime
 COPY --from=install /build/install-destdir /
 COPY build/package/scripts/after-install /tmp/install/build/package/scripts/after-install
 COPY --from=build /app/build/package_dependencies.sh /tmp/install/build/package_dependencies.sh
+COPY --from=build /app/tasks/helpers.sh /tmp/install/tasks/helpers.sh
 COPY --from=build /app/tasks/helpers/detect_os_release.sh /tmp/install/tasks/helpers/detect_os_release.sh
+COPY --from=build /app/tasks/install-system-build-dependencies /tmp/install/tasks/install-system-build-dependencies
 RUN set -x && \
-  apt-get update && \
-  bash -c 'source /tmp/install/build/package_dependencies.sh && DEBIAN_FRONTEND=noninteractive apt-get -y --no-install-recommends install "${core_runtime_dependencies[@]}"' && \
+  /app/tasks/install-system-build-dependencies && \
+  INSTALL_CORE_RUNTIME_DEPENDENCIES=true /app/tasks/install-system-build-dependencies
   /tmp/install/build/package/scripts/after-install 1 && \
-  rm -rf /tmp/install /var/lib/apt/lists/*
+  rm -rf /var/lib/apt/lists/* /var/lib/dpkg/*-old /var/cache/* /var/log/*
 
 EXPOSE 80 443
 
