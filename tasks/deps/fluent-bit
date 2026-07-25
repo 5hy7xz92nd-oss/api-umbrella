@@ -3,8 +3,8 @@
 set -e -u -x
 source ./tasks/helpers.sh
 
-fluent_bit_version="5.0.6"
-fluent_bit_hash="bffe424e9010e89f412fbc0bbd054040aa4f447b9f2f20ffd5b42110db9b2fa3"
+fluent_bit_version="5.0.9"
+fluent_bit_hash="158e86d5fbf605e5aeced06ee94ce41a224b34311627f8f4083d722d1f6d7967"
 
 task_working_dir
 download "https://github.com/fluent/fluent-bit/archive/refs/tags/v${fluent_bit_version}.tar.gz" "sha256" "$fluent_bit_hash"

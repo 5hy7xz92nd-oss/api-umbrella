@@ -10,7 +10,7 @@ if ENV["CI"] == "true"
     # The default options are sort of all-or-nothing (eg, by defining
     # `methods_to_retry`, that takes precedence over any other options), to
     # this allows for more granular decision making on which errors to retry.
-    def self.failure_to_retry?(failures = [], klass_method_name, klass)
+    def self.failure_to_retry?(failures = [], klass_method_name, klass) # rubocop:disable Style/OptionalArguments
       return false if failures.empty?
 
       errors = failures.map(&:error).map(&:class)

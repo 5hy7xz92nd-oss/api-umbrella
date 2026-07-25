@@ -15,7 +15,7 @@ gem "minitest-sprint", "~> 1.3.0"
 gem "minitest-reporters", "~> 1.8.0"
 
 # For an "after_all" callback.
-gem "minitest-hooks", "~> 1.5.0"
+gem "minitest-hooks", "~> 1.5.4"
 
 # Retry certain flaky tests.
 gem "minitest-retry", "~> 0.3.0"
@@ -24,8 +24,8 @@ gem "minitest-retry", "~> 0.3.0"
 gem "minitest-ci", "~> 3.4.0"
 
 # Ruby lint/style checker
-gem "rubocop", "~> 1.81", :require => false
-gem "rubocop-minitest", "~> 0.39.1", :require => false
+gem "rubocop", "~> 1.88", :require => false
+gem "rubocop-minitest", "~> 0.40.0", :require => false
 
 # Running background processes
 gem "childprocess"
@@ -35,7 +35,7 @@ gem "typhoeus", "~> 1.6.0"
 
 # JSON parsing
 gem "multi_json", "~> 1.19"
-gem "oj", "~> 3.16"
+gem "oj", "~> 3.17"
 
 # Database libraries
 gem "activerecord", "~> 7.2.3", :require => "active_record"
@@ -45,7 +45,7 @@ gem "faraday-typhoeus", "~> 2.0.0"
 gem "active_attr", "~> 0.17.2"
 
 # Factories for test database data
-gem "factory_bot", "~> 6.5.6"
+gem "factory_bot", "~> 6.6.0"
 
 # Programmatically generate Rails session cookies.
 gem "rails_compatible_cookies_utils", "~> 0.1.0"
@@ -73,7 +73,7 @@ gem "activesupport", "~> 7.2.3"
 gem "faker", "~> 3.0"
 
 # Concurrency helpers.
-gem "concurrent-ruby", "~> 1.3.3"
+gem "concurrent-ruby", "~> 1.3.8"
 
 # Time zone randomization for tests.
 gem "zonebie", "~> 0.6.1"

@@ -36,6 +36,7 @@ elif [[ "$ID_NORMALIZED" == "debian" ]]; then
   fi
 
   if [[ "$ID" == "debian" ]]; then
+    # shellcheck disable=SC1091
     distro=$(. /etc/os-release && echo "$VERSION_CODENAME")
     curl -fsSL -o /usr/share/keyrings/pgdg.asc https://www.postgresql.org/media/keys/ACCC4CF8.asc
     echo "deb [signed-by=/usr/share/keyrings/pgdg.asc] http://apt.postgresql.org/pub/repos/apt/ ${distro}-pgdg main" > /etc/apt/sources.list.d/pgdg.list
