@@ -142,6 +142,7 @@ jobs:
         run: |
           docker compose run \
             --rm \
+            --no-deps \
             --volume "$(pwd)/.git:/app/.git" \
             app \
             bash -c 'git config --global --add safe.directory /app && make lint'
