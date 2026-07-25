@@ -19,7 +19,7 @@ dependencies = {
   "lua-resty-openidc ~> 1.7.6",
   "lua-resty-session ~> 3.10",
   "lua-resty-txid ~> 1.0.0",
-  "lua-resty-uuid ~> 1.2.0",
+  "lua-resty-uuid ~> 1.1",
   "lua-resty-validation ~> 2.7",
   "luajit-zstd ~> 0.2.3",
   "lualdap ~> 1.4.0",

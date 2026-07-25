@@ -22,7 +22,7 @@ return {
       ["lua-resty-openssl"] = "1.8.0-1",
       ["lua-resty-session"] = "3.10-1",
       ["lua-resty-txid"] = "1.0.0-1",
-      ["lua-resty-uuid"] = "1.2.0-1",
+      ["lua-resty-uuid"] = "1.1-1",
       ["lua-resty-validation"] = "2.7-1",
       luafilesystem = "1.9.0-1",
       ["luajit-zstd"] = "0.2.3-1",
