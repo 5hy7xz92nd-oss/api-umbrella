@@ -12,7 +12,7 @@ dependencies = {
   "inspect ~> 3.1.3",
   "lapis ~> 1.18.0",
   "libcidr-ffi ~> 1.0.0",
-  "lua-resty-http ~> 0.17.2",
+  "lua-resty-http ~> 0.18.0",
   "lua-resty-mail ~> 1.2.0",
   "lua-resty-mlcache ~> 2.7.0",
   "lua-resty-nettle ~> 2.1",
