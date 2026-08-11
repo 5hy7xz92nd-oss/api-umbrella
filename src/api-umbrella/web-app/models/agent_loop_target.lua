@@ -185,7 +185,7 @@ AgentLoopTarget.standings = function()
       api_users.first_name,
       api_users.last_name,
       COUNT(*)::bigint AS target_count,
-      COUNT(*) FILTER (WHERE agent_loop_targets.state IN ('assigned', 'performed', 'evidenced', 're_evaluated', 'responsibility_changed'))::bigint AS active_target_count,
+      COUNT(*) FILTER (WHERE agent_loop_targets.state IN ('assigned', 'performed', 'evidenced', 'graded', 're_evaluated', 'responsibility_changed'))::bigint AS active_target_count,
       ROUND(AVG(agent_loop_targets.current_grade), 2) AS average_grade,
       SUM(agent_loop_targets.reputation_score) AS reputation_score,
       SUM(agent_loop_targets.asset_value) AS asset_value,
