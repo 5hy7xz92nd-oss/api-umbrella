@@ -1,6 +1,6 @@
 # API Umbrella
 
-## What Is API Umbrella?
+# What Is API Umbrella?
 
 API Umbrella is an open source API management platform for exposing web service APIs. The basic goal of API Umbrella is to make life easier for both API creators and API consumers. How?
 
