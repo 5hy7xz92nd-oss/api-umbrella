@@ -3,6 +3,7 @@ local AgentLoopTarget = require "api-umbrella.web-app.models.agent_loop_target"
 local capture_errors_json_full = require("api-umbrella.web-app.utils.capture_errors").json_full
 local csrf_validate_token_or_admin_token_filter = require("api-umbrella.web-app.utils.csrf").validate_token_or_admin_token_filter
 local json_response = require "api-umbrella.web-app.utils.json_response"
+local db = require "lapis.db"
 local require_admin = require "api-umbrella.web-app.utils.require_admin"
 local respond_to = require "api-umbrella.web-app.utils.respond_to"
 local validation_ext = require "api-umbrella.web-app.utils.validation_ext"
@@ -22,10 +23,14 @@ end
 local function filtered_targets(self)
   local conditions = {}
   if self.params["agent_id"] then
-    table.insert(conditions, "agent_id = " .. require("lapis.db").escape_literal(self.params["agent_id"]))
+    if validation_ext.string.uuid(self.params["agent_id"]) then
+      table.insert(conditions, "agent_id = " .. db.escape_literal(self.params["agent_id"]))
+    else
+      table.insert(conditions, "1 = 0")
+    end
   end
   if self.params["state"] then
-    table.insert(conditions, "state = " .. require("lapis.db").escape_literal(self.params["state"]))
+    table.insert(conditions, "state = " .. db.escape_literal(self.params["state"]))
   end
 
   local where = ""

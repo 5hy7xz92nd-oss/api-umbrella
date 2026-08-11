@@ -75,8 +75,8 @@ local function build_target_updates(self, target)
   if (self.event_type == "grade" or self.event_type == "re_evaluate") and self.score ~= nil and self.score ~= db_null then
     updates["current_grade"] = self.score
     updates["current_grade_label"] = self.grade_label or target.current_grade_label
-    updates["reputation_score"] = (tonumber(target.reputation_score) or 0) + (tonumber(self.reputation_delta) or tonumber(self.score) or 0)
-    updates["asset_value"] = (tonumber(target.asset_value) or 0) + (tonumber(self.asset_value_delta) or tonumber(self.score) or 0)
+    updates["reputation_score"] = (tonumber(target.reputation_score) or 0) + (tonumber(self.reputation_delta) or 0)
+    updates["asset_value"] = (tonumber(target.asset_value) or 0) + (tonumber(self.asset_value_delta) or 0)
   elseif self.event_type == "responsibility_change" and self.responsibility_tier then
     updates["responsibility_tier"] = self.responsibility_tier
   end
