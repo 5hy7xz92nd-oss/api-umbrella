@@ -15,7 +15,7 @@ Thank you for your interest in contributing to API Umbrella! This document outli
 
 ## Code of Conduct
 
-Please be respectful and constructive in all interactions. We follow the [Contributor Covenant](https://www.contributor-covenant.org/) code of conduct.
+Please be respectful and constructive in all interactions and follow the [Contributor Covenant](https://www.contributor-covenant.org/) principles.
 
 ## Getting Started
 
@@ -41,6 +41,8 @@ Start the full development stack:
 
 ```bash
 docker compose up
+# If you only have the legacy binary:
+# docker-compose up
 ```
 
 Refer to the [full development setup guide](https://api-umbrella.readthedocs.org/en/latest/developer/dev-setup.html) for detailed instructions.
@@ -83,10 +85,10 @@ The integration test suite runs inside Docker:
 
 ```bash
 # Run all tests
-docker compose run --rm app bundle exec rake test
+docker-compose run --rm app make test
 
 # Run a specific test file
-docker compose run --rm app bundle exec ruby test/proxy/test_api_key.rb
+docker-compose run --rm app bundle exec minitest test/apis/v1/admins/test_create.rb
 ```
 
 For JavaScript linting in the admin UI:

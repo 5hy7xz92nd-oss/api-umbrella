@@ -78,6 +78,28 @@ Admin & Developer interfaces:
 | **CLI** | `src/api-umbrella/cli/` | Lua | Command-line management interface |
 | **GeoIP Updater** | `src/api-umbrella/geoip-auto-updater.lua` | Lua | Automatic GeoIP database updates |
 
+### Component Dependency Graph (code-derived)
+
+```mermaid
+graph TD
+  Client[API consumers] --> Envoy[Envoy proxy]
+  Envoy --> Proxy[proxy (OpenResty/Lua)]
+  Proxy --> Backend[Your API backends]
+  AdminUI[admin-ui (Ember.js)] --> WebApp[web-app APIs]
+  Proxy --> Postgres[(PostgreSQL)]
+  WebApp --> Postgres
+  Proxy --> OpenSearch[(OpenSearch)]
+  WebApp --> OpenSearch
+  EnvoyWrapper[envoy-config-wrapper (Rust)] --> Envoy
+```
+
+Code references used for the graph:
+
+- `src/api-umbrella/admin-ui/app/models/api.js` and other `admin-ui` models call `/api-umbrella/v1/*` web-app endpoints.
+- `src/api-umbrella/web-app/app.lua` and `src/api-umbrella/web-app/models/analytics_search_opensearch.lua` use PostgreSQL and OpenSearch utilities.
+- `src/api-umbrella/proxy/startup/seed_database.lua` and `src/api-umbrella/proxy/startup/opensearch_setup.lua` use PostgreSQL and OpenSearch utilities.
+- `src/api-umbrella/bin/envoy-config-wrapper.rs` writes Envoy config and execs the Envoy binary.
+
 ## Dependencies
 
 ### Runtime Services
@@ -85,7 +107,7 @@ Admin & Developer interfaces:
 | Service | Purpose |
 |---|---|
 | [OpenResty](https://openresty.org/) (nginx + LuaJIT) | Core reverse proxy and request processing |
-| [Envoy Proxy](https://www.envoyproxy.io/) | Egress proxy, TLS, routing |
+| [Envoy Proxy](https://www.envoyproxy.io/) | Edge proxy for TLS termination and request routing |
 | [PostgreSQL](https://www.postgresql.org/) | Primary database for configuration, users, and sessions |
 | [OpenSearch](https://opensearch.org/) | Analytics and API log storage |
 
@@ -126,6 +148,8 @@ Once you have API Umbrella up and running, there are a variety of things you can
 git clone https://github.com/NREL/api-umbrella.git
 cd api-umbrella
 docker compose up
+# If you only have the legacy binary:
+# docker-compose up
 ```
 
 The application will be available at:
