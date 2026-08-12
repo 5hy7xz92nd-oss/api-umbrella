@@ -15,7 +15,7 @@ Thank you for your interest in contributing to API Umbrella! This document outli
 
 ## Code of Conduct
 
-Please be respectful and constructive in all interactions and follow the [Contributor Covenant](https://www.contributor-covenant.org/) principles.
+Please be respectful and constructive in all interactions. We ask contributors to be kind and considerate, in the spirit of the [Contributor Covenant](https://www.contributor-covenant.org/).
 
 ## Getting Started
 
@@ -85,14 +85,10 @@ The integration test suite runs inside Docker:
 
 ```bash
 # Run all tests
-docker compose run --rm app make test
-# Legacy binary fallback:
-# docker-compose run --rm app make test
+docker-compose run --rm app make test
 
 # Run a specific test file
-docker compose run --rm app bundle exec minitest test/apis/v1/admins/test_create.rb
-# Legacy binary fallback:
-# docker-compose run --rm app bundle exec minitest test/apis/v1/admins/test_create.rb
+docker-compose run --rm app bundle exec minitest test/apis/v1/admins/test_create.rb
 ```
 
 For JavaScript linting in the admin UI:
