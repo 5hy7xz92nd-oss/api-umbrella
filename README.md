@@ -1,10 +1,6 @@
 # API Umbrella
 
-[![CI](https://github.com/NREL/api-umbrella/actions/workflows/main.yml/badge.svg)](https://github.com/NREL/api-umbrella/actions/workflows/main.yml)
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE.txt)
-[![Version](https://img.shields.io/badge/version-1.6.0-green.svg)](src/api-umbrella/version.txt)
-
-## What Is API Umbrella?
+# What Is API Umbrella?
 
 API Umbrella is an open source API management platform for exposing web service APIs. The basic goal of API Umbrella is to make life easier for both API creators and API consumers. How?
 
