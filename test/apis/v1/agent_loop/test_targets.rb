@@ -83,6 +83,7 @@ class Test::Apis::V1::AgentLoop::TestTargets < Minitest::Test
     response = Typhoeus.get("https://127.0.0.1:9081/api-umbrella/v1/agent-loop/targets.json", http_options.deep_merge(admin_token(admin)))
     assert_response_code(200, response)
     data = MultiJson.load(response.body)
+    # assert_equal(2, ...) since exactly 2 targets were created in this test
     assert_equal(2, data["targets"].length)
   end
 
@@ -114,6 +115,7 @@ class Test::Apis::V1::AgentLoop::TestTargets < Minitest::Test
     response = Typhoeus.get("https://127.0.0.1:9081/api-umbrella/v1/agent-loop/targets/#{target.id}/events.json", http_options.deep_merge(admin_token(admin)))
     assert_response_code(200, response)
     data = MultiJson.load(response.body)
+    # 2 events: the initial "assigned" event auto-created by create_target, plus the explicit "work" event
     assert_equal(2, data["events"].length)
     assert_equal("assigned", data["events"][0]["event_type"])
     assert_equal("work", data["events"][1]["event_type"])
