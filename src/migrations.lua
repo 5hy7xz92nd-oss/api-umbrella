@@ -1552,76 +1552,44 @@ return {
     db.query("COMMIT")
   end,
 
-  [1786445195] = function()
+  [1769633747] = function()
     db.query("BEGIN")
 
-    db.query([[
-      CREATE TABLE agent_loop_targets(
-        id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
-        agent_id uuid NOT NULL REFERENCES api_users(id) ON DELETE CASCADE DEFERRABLE INITIALLY IMMEDIATE,
-        name varchar(255) NOT NULL,
-        description text,
-        state varchar(50) NOT NULL DEFAULT 'assigned',
-        mentor_admin_id uuid REFERENCES admins(id) ON DELETE SET NULL DEFERRABLE INITIALLY IMMEDIATE,
-        responsibility_tier varchar(100) NOT NULL DEFAULT 'baseline',
-        current_grade numeric(5, 2),
-        current_grade_label varchar(50),
-        reputation_score numeric(10, 2) NOT NULL DEFAULT 0,
-        asset_value numeric(10, 2) NOT NULL DEFAULT 0,
-        last_event_at timestamp with time zone,
-        iteration_count integer NOT NULL DEFAULT 0,
-        metadata jsonb,
-        created_at timestamp with time zone NOT NULL,
-        created_by_id uuid NOT NULL,
-        created_by_username varchar(255) NOT NULL,
-        updated_at timestamp with time zone NOT NULL,
-        updated_by_id uuid NOT NULL,
-        updated_by_username varchar(255) NOT NULL,
-        CONSTRAINT agent_loop_targets_state_check CHECK (state IN ('assigned', 'performed', 'evidenced', 'graded', 'responsibility_changed', 're_evaluated')),
-        CONSTRAINT agent_loop_targets_responsibility_tier_check CHECK (responsibility_tier != '')
-      )
-    ]])
-    db.query("CREATE INDEX ON agent_loop_targets(agent_id)")
-    db.query("CREATE INDEX ON agent_loop_targets(state)")
-    db.query("CREATE INDEX ON agent_loop_targets(mentor_admin_id)")
-    db.query("CREATE INDEX ON agent_loop_targets(last_event_at)")
-    db.query("CREATE TRIGGER agent_loop_targets_stamp_record BEFORE INSERT OR UPDATE OR DELETE ON agent_loop_targets FOR EACH ROW EXECUTE PROCEDURE stamp_record()")
-    db.query("SELECT audit.audit_table('agent_loop_targets')")
-
-    db.query([[
-      CREATE TABLE agent_loop_events(
-        id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
-        target_id uuid NOT NULL REFERENCES agent_loop_targets(id) ON DELETE CASCADE DEFERRABLE INITIALLY IMMEDIATE,
-        event_type varchar(50) NOT NULL,
-        summary text,
-        evidence jsonb,
-        outcome jsonb,
-        score numeric(5, 2),
-        grade_label varchar(50),
-        responsibility_tier varchar(100),
-        reputation_delta numeric(10, 2),
-        asset_value_delta numeric(10, 2),
-        source varchar(50) NOT NULL DEFAULT 'manual',
-        deduplication_key varchar(255),
-        metadata jsonb,
-        created_at timestamp with time zone NOT NULL,
-        created_by_id uuid NOT NULL,
-        created_by_username varchar(255) NOT NULL,
-        updated_at timestamp with time zone NOT NULL,
-        updated_by_id uuid NOT NULL,
-        updated_by_username varchar(255) NOT NULL,
-        CONSTRAINT agent_loop_events_event_type_check CHECK (event_type IN ('assigned', 'work', 'evidence', 'grade', 'responsibility_change', 're_evaluate', 'mentor_note')),
-        CONSTRAINT agent_loop_events_source_check CHECK (source IN ('manual', 'automated'))
-      )
-    ]])
-    db.query("CREATE INDEX ON agent_loop_events(target_id)")
-    db.query("CREATE INDEX ON agent_loop_events(event_type)")
-    db.query("CREATE INDEX ON agent_loop_events(created_at)")
-    db.query("CREATE UNIQUE INDEX agent_loop_events_deduplication_key_idx ON agent_loop_events(deduplication_key) WHERE deduplication_key IS NOT NULL")
-    db.query("CREATE TRIGGER agent_loop_events_stamp_record BEFORE INSERT OR UPDATE OR DELETE ON agent_loop_events FOR EACH ROW EXECUTE PROCEDURE stamp_record('[{\"table_name\":\"agent_loop_targets\",\"primary_key\":\"id\",\"foreign_key\":\"target_id\"}]')")
-    db.query("SELECT audit.audit_table('agent_loop_events')")
+    -- Add an extra column to store the unique user IDs in a fashion more
+    -- optimized for querying. But since this strategy only works if each row
+    -- represents a single date bucket, add extra constraints to ensure we
+    -- don't accidentally mess up this assumption in the future.
+    db.query("ALTER TABLE analytics_cache ADD COLUMN data_date varchar GENERATED ALWAYS AS ((data->'aggregations'->'hits_over_time'->'buckets'->0->>'key_as_string')::varchar) STORED")
+    db.query("ALTER TABLE analytics_cache ADD COLUMN hit_count bigint GENERATED ALWAYS AS ((data->'aggregations'->'hits_over_time'->'buckets'->0->>'doc_count')::bigint) STORED")
+    db.query("ALTER TABLE analytics_cache ADD COLUMN response_time_average bigint GENERATED ALWAYS AS (round((data->'aggregations'->'response_time_average'->>'value')::numeric)) STORED")
 
     db.query(grants_sql)
     db.query("COMMIT")
+  end,
+
+  [1769732670] = function()
+    db.query("BEGIN")
+
+    db.query([[
+      CREATE OR REPLACE FUNCTION analytics_cache_extract_unique_user_ids()
+      RETURNS TRIGGER AS $$
+      BEGIN
+        IF (jsonb_typeof(NEW.data->'aggregations'->'unique_user_ids'->'buckets') = 'array') THEN
+          NEW.unique_user_ids := (SELECT array_agg(DISTINCT bucket->'key'->>'user_id')::uuid[] FROM jsonb_array_elements(NEW.data->'aggregations'->'unique_user_ids'->'buckets') AS bucket);
+        END IF;
+
+        RETURN NEW;
+      END;
+      $$ LANGUAGE plpgsql;
+    ]])
+
+    db.query(grants_sql)
+    db.query("COMMIT")
+  end,
+
+  [1775265493] = function()
+    db.query("CREATE INDEX CONCURRENTLY api_users_email_created_at_idx ON api_umbrella.api_users USING btree (email, created_at ASC)")
+
+    db.query(grants_sql)
   end,
 }
