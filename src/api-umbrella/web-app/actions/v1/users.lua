@@ -70,10 +70,6 @@ local function get_options(self)
     options["verify_email"] = (tostring(options["verify_email"]) == "true")
   end
 
-  if is_empty(options["contact_url"]) then
-    options["contact_url"] = "https://" .. config["web"]["default_host"] .. "/contact/"
-  end
-
   if is_empty(options["site_name"]) then
     options["site_name"] = config["site_name"]
   end
